@@ -1,7 +1,9 @@
+import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import UserInfo from "./UserInfo";
-
-function Sidebar(props) {
+import DataContext from "./dataContext";
+function Sidebar() {
+  const dataInfo = useContext(DataContext);
   return (
     <div className="sidebar">
       <ul>
@@ -38,9 +40,9 @@ function Sidebar(props) {
         </li>
       </ul>
 
-      {props.isLogin && (
+      {dataInfo.isLogin && (
         <div className="bg">
-          <UserInfo data={props.userInfo} />
+          <UserInfo data={dataInfo.userInfo} />
         </div>
       )}
     </div>

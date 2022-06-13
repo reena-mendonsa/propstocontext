@@ -5,30 +5,36 @@ class People extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showPeopleClosed: true
-    }
+      showPeopleClosed: true,
+    };
   }
 
   toggleHandler = () => {
-    this.setState((prev) => ({showPeopleClosed: !prev.showPeopleClosed}))
-  }
+    this.setState((prev) => ({ showPeopleClosed: !prev.showPeopleClosed }));
+  };
 
-  render () {
+  render() {
     const { isLogin, people } = this.props;
 
     if (!(isLogin && people)) {
-		throw new Error("Auth Failed");
+      throw new Error("Auth Failed");
     }
 
     return (
-			<>
+      <>
         <h1 className="center">🚀 Welcome to People page!</h1>
         <div className="center">
-          <button className="show-people" onClick={this.toggleHandler}>Show People</button>
+          <button className="show-people" onClick={this.toggleHandler}>
+            Show People
+          </button>
         </div>
-        {this.state.showPeopleClosed ? "" : <ShowPeople people={people} toggleHandler={this.toggleHandler} />}
-			</>
-		);
+        {this.state.showPeopleClosed ? (
+          ""
+        ) : (
+          <ShowPeople people={people} toggleHandler={this.toggleHandler} />
+        )}
+      </>
+    );
   }
 }
 

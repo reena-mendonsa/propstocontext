@@ -1,13 +1,9 @@
+import React, { useContext } from "react";
 import UserInfo from "./UserInfo";
+import DataContext from "./dataContext";
 
-function Header({
-  changeNavbar,
-  logoutHandler,
-  isLogin,
-  loginHandler,
-  handleModal,
-  userInfo
-}) {
+function Header() {
+  const dataInfo = useContext(DataContext);
   return (
     <div className="header">
       <div className="header-logo">
@@ -21,22 +17,22 @@ function Header({
         <span className="site-title">Dashboard</span>
       </div>
       <div className="header-search">
-        <button className="button-menu" onClick={changeNavbar}>
+        <button className="button-menu" onClick={dataInfo.changeNavbar}>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 385 385">
             <path d="M12 120.3h361a12 12 0 000-24H12a12 12 0 000 24zM373 180.5H12a12 12 0 000 24h361a12 12 0 000-24zM373 264.7H132.2a12 12 0 000 24H373a12 12 0 000-24z" />
           </svg>
         </button>
         <input type="search" placeholder="Search Documentation..." />
       </div>
-      {isLogin ? (
+      {dataInfo.isLogin ? (
         <>
-          <UserInfo data={userInfo} />
-          <button className="logout" onClick={logoutHandler}>
+          <UserInfo data={dataInfo.userInfo} />
+          <button className="logout" onClick={dataInfo.logoutHandler}>
             Log Out
           </button>
         </>
       ) : (
-        <button onClick={() => handleModal(true)} className="logout">
+        <button onClick={() => dataInfo.handleModal(true)} className="logout">
           Log In
         </button>
       )}

@@ -8,6 +8,7 @@ import people from "./got.json";
 import "./styles.css";
 import verifyLogin from "./utils";
 import ErrorBoundary from "./ErrorBoundary";
+import { DataProvider } from "./dataContext";
 
 export default class App extends React.Component {
   state = {
@@ -16,7 +17,7 @@ export default class App extends React.Component {
     isModalOpen: false,
     data: null,
     userInfo: null,
-    people: people
+    people: people,
   };
 
   changeNavbar = () => {
@@ -32,7 +33,7 @@ export default class App extends React.Component {
       this.setState({
         isLogin: true,
         userInfo: res,
-        data: articles
+        data: articles,
       });
     });
   };
@@ -41,36 +42,34 @@ export default class App extends React.Component {
     this.setState({
       isLogin: false,
       data: null,
-      people: null
+      people: null,
     });
   };
 
   render() {
     const { isLogin, data, userInfo } = this.state;
-
+    const dataInfo = {
+      isLogin: isLogin,
+      changeNavbar: this.changeNavbar,
+      logoutHandler: this.logoutHandler,
+      handleModal: this.handleModal,
+      userInfo: userInfo,
+      data: data,
+      people: people,
+      loginHandler: this.loginHandler,
+    };
     return (
       <div className={`container ${this.state.navClosed ? "nav-closed" : ""}`}>
-        <Header
-          isLogin={isLogin}
-          changeNavbar={this.changeNavbar}
-          logoutHandler={this.logoutHandler}
-          handleModal={this.handleModal}
-          userInfo={userInfo}
-        />
-        <div className="main">
-          <Sidebar userInfo={userInfo} isLogin={isLogin} />
-          <ErrorBoundary>
-            <Main isLogin={isLogin} data={data} people={people} userInfo={userInfo} />
-          </ErrorBoundary>
-        </div>
-        {this.state.isModalOpen ? (
-          <Auth
-            handleModal={this.handleModal}
-            loginHandler={this.loginHandler}
-          />
-        ) : (
-          ""
-        )}
+        <DataProvider value={dataInfo}>
+          <Header />
+          <div className="main">
+            <Sidebar />
+            <ErrorBoundary>
+              <Main />
+            </ErrorBoundary>
+          </div>
+          {this.state.isModalOpen ? <Auth /> : ""}
+        </DataProvider>
       </div>
     );
   }
